@@ -1,0 +1,42 @@
+<dialog id="delete-cell-modal"
+        class="modal"
+        data-controller="delete-cell-modal"
+        data-delete-cell-modal-target="dialog"
+        aria-labelledby="delete-cell-title">
+  <div class="modal-box max-w-3xl">
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="delete-cell-title" class="text-lg font-bold">Delete cell</h3>
+      <div class="flex items-center gap-2 text-sm text-base-content/60">
+        <span>(esc)</span>
+        <button type="button"
+                class="btn btn-ghost btn-sm btn-square"
+                aria-label="Close delete dialog"
+                data-action="click->delete-cell-modal#close">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <p class="text-base-content/80 mb-6">
+      This will permanently delete the cell. This action cannot be undone.
+    </p>
+
+    <div class="modal-action mt-8">
+      <button type="button"
+              class="btn btn-ghost"
+              data-action="click->delete-cell-modal#cancel">
+        Cancel
+      </button>
+      <button type="button"
+              class="btn btn-error gap-2"
+              data-action="click->delete-cell-modal#confirm">
+        <%= inline_svg("icons/trash", class: "w-5 h-5") %>
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Close"></button>
+  </form>
+</dialog>

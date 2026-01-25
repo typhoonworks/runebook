@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html data-theme="runebook" class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Runebook" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Runebook">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%= vite_client_tag %>
+    <%= vite_stylesheet_tag 'application' %>
+    <%= vite_javascript_tag 'application' %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+  </head>
+
+  <body class="min-h-screen bg-base-200 text-base-content">
+    <div class="drawer lg:drawer-open">
+      <input id="app-drawer" type="checkbox" class="drawer-toggle" aria-hidden="true" />
+      <div class="drawer-content flex flex-col">
+        <main class="p-4 lg:p-8">
+          <%= yield %>
+        </main>
+      </div>
+      <div class="drawer-side z-40">
+        <label for="app-drawer" aria-label="close sidebar" class="drawer-overlay" aria-hidden="true" tabindex="-1"></label>
+        <aside class="w-72 bg-neutral text-neutral-content min-h-full flex flex-col">
+          <div class="px-4 py-4 border-b border-neutral-content/10">
+            <a href="/" class="flex items-center gap-2 font-semibold">
+              <%= inline_svg("runebook", class: "h-7 w-7 rounded-md") %>
+              <span>Runebook</span>
+              <span class="badge badge-sm badge-neutral-content/20 ml-auto"><%= project_version %></span>
+            </a>
+          </div>
+          <nav class="menu px-2 py-4 flex-1">
+            <ul>
+              <li><a href="/" class="text-neutral-content/70 hover:text-neutral-content hover:bg-neutral-content/10 <%= current_page?(root_path) ? 'bg-neutral-content/10 text-neutral-content' : '' %>">Home</a></li>
+              <li><a href="<%= notebooks_path %>" class="text-neutral-content/70 hover:text-neutral-content hover:bg-neutral-content/10 <%= current_page?(notebooks_path) ? 'bg-neutral-content/10 text-neutral-content' : '' %>">Notebooks</a></li>
+              <li><a href="#" class="text-neutral-content/70 hover:text-neutral-content hover:bg-neutral-content/10">Settings</a></li>
+            </ul>
+          </nav>
+          <div class="px-4 py-4 border-t border-neutral-content/10 text-xs text-neutral-content/60">
+            <div class="flex items-center justify-between" data-controller="theme">
+              <span>Workspace</span>
+              <button class="btn btn-ghost btn-xs text-neutral-content/70 hover:text-neutral-content" title="Switch theme" data-action="theme#toggle">Theme</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

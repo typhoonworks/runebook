@@ -1,0 +1,21 @@
+<%= form_with url: imports_path, method: :post, local: true, class: "space-y-4", data: { controller: "source-import" } do |f| %>
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">
+        Paste <strong>Runebook Markdown</strong> (<code class="px-1 py-0.5 rounded bg-base-200 border border-base-300 font-mono text-xs leading-tight">.runemd</code>) content
+      </span>
+    </label>
+    <%= f.text_area :content,
+      class: "textarea textarea-bordered font-mono text-sm h-48",
+      placeholder: "# My Notebook\n\n```ruby\ngem \"faker\"\n```\n\n## Section\n\n```ruby\nputs 'Hello, world!'\n```",
+      data: { source_import_target: "textarea", action: "input->source-import#validate" }
+    %>
+  </div>
+
+  <div class="flex justify-end">
+    <%= f.submit "Import",
+      class: "btn btn-primary",
+      data: { source_import_target: "submitButton" }
+    %>
+  </div>
+<% end %>

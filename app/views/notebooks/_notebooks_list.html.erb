@@ -1,0 +1,33 @@
+<div class="mt-8">
+  <h2 class="text-sm font-medium text-base-content/70 tracking-wide mb-3">Notebooks</h2>
+
+  <% if notebooks.any? %>
+    <div class="border border-base-300 rounded-lg bg-base-100">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        <% notebooks.each do |notebook| %>
+          <article class="card bg-base-200/50 border border-base-300">
+            <div class="card-body p-4">
+              <h3 class="card-title text-base"><%= notebook.title %></h3>
+              <p class="text-xs text-base-content/60 truncate" title="<%= notebook.file_path %>">
+                <%= truncate_path(notebook.file_path) %>
+              </p>
+              <div class="card-actions justify-end mt-2">
+                <% if notebook.open_session %>
+                  <%= link_to "Join session", session_path(notebook.open_session.token), class: "text-error text-sm font-medium hover:text-error/80 focus-visible:underline focus-visible:underline-offset-4" %>
+                <% else %>
+                  <%= link_to sessions_path(notebook_id: notebook.id), data: { turbo_method: :post }, class: "btn btn-ghost btn-sm" do %>
+                    Open
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="rounded-lg border border-dashed border-base-300 bg-base-100 p-6 text-sm text-base-content/60">
+      No notebooks found.
+    </div>
+  <% end %>
+</div>

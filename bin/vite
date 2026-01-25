@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Simple wrapper to call the local Vite CLI.
+# Usage examples:
+#   bin/vite dev
+#   bin/vite build
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+exec "$ROOT_DIR/node_modules/.bin/vite" "$@"
+

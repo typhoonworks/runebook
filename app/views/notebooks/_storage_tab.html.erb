@@ -1,0 +1,93 @@
+<div
+  data-controller="file-browser"
+  data-file-browser-browse-url-value="<%= files_path %>"
+  data-file-browser-open-url-value="<%= sessions_path %>"
+  data-file-browser-create-directory-url-value="<%= directories_path %>"
+  data-file-browser-create-notebook-url-value="<%= files_path %>"
+  data-file-browser-initial-path-value="<%= Notebook.workspace_dir %>"
+  class="space-y-4"
+>
+  <%# Path input row with + dropdown and Open button %>
+  <div class="flex items-center gap-2">
+    <div class="flex-1 relative">
+      <input
+        type="text"
+        class="input input-bordered w-full font-mono text-sm pr-10"
+        placeholder="/path/to/file.runemd"
+        data-file-browser-target="pathInput"
+        data-action="keydown.enter->file-browser#openFromInput change->file-browser#navigateFromInput"
+      />
+    </div>
+
+    <%# Plus dropdown menu %>
+    <div class="dropdown dropdown-end">
+      <button type="button" tabindex="0" class="btn btn-ghost btn-square" aria-label="Create new">
+        <%= inline_svg("icons/plus", class: "w-5 h-5") %>
+      </button>
+      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow border border-base-300">
+        <li>
+          <button type="button" data-action="file-browser#showNewDirectoryModal" class="flex items-center gap-2">
+            <%= inline_svg("icons/folder", class: "w-4 h-4") %>
+            New directory
+          </button>
+        </li>
+        <li>
+          <button type="button" data-action="file-browser#createNewNotebook" class="flex items-center gap-2">
+            <%= inline_svg("icons/file", class: "w-4 h-4") %>
+            New notebook
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-action="file-browser#openFromInput"
+      data-file-browser-target="openButton"
+    >
+      Open
+    </button>
+  </div>
+
+  <%# Directory listing (3-column grid) %>
+  <div
+    class="border border-base-300 rounded-lg max-h-72 overflow-y-auto bg-base-100 relative"
+    data-file-browser-target="browserContainer"
+  >
+    <div
+      class="absolute inset-0 bg-base-100/80 flex items-center justify-center hidden z-10"
+      data-file-browser-target="loadingOverlay"
+    >
+      <span class="loading loading-spinner loading-md"></span>
+    </div>
+    <div class="p-4" data-file-browser-target="directoryBrowser">
+      <div class="flex items-center justify-center py-8 text-base-content/60">
+        Loading...
+      </div>
+    </div>
+  </div>
+
+  <%# New directory modal %>
+  <dialog class="modal" data-file-browser-target="newDirectoryModal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg mb-4">New directory</h3>
+      <div class="form-control">
+        <input
+          type="text"
+          class="input input-bordered w-full"
+          placeholder="Directory name"
+          data-file-browser-target="newDirectoryInput"
+          data-action="keydown.enter->file-browser#createDirectory keydown.esc->file-browser#closeNewDirectoryModal"
+        />
+      </div>
+      <div class="modal-action">
+        <button type="button" class="btn btn-ghost" data-action="file-browser#closeNewDirectoryModal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-action="file-browser#createDirectory">Create</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+</div>

@@ -1,0 +1,50 @@
+<div class="max-w-5xl mx-auto">
+  <div class="flex items-start justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-semibold">Open</h1>
+      <p class="mt-1 text-sm text-base-content/60">Open an existing notebook or import from source.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= link_to "New notebook", sessions_path, data: { turbo_method: :post }, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div data-controller="tabs" data-tabs-active-class="tab-active">
+    <div role="tablist" class="tabs tabs-bordered mb-6">
+      <button
+        type="button"
+        role="tab"
+        class="tab tab-active gap-2"
+        data-tabs-target="tab"
+        data-action="tabs#select"
+        data-tabs-panel-param="storage"
+      >
+        <%= inline_svg("icons/file", class: "w-4 h-4") %>
+        From storage
+      </button>
+      <button
+        type="button"
+        role="tab"
+        class="tab gap-2"
+        data-tabs-target="tab"
+        data-action="tabs#select"
+        data-tabs-panel-param="source"
+      >
+        <%= inline_svg("icons/clipboard", class: "w-4 h-4") %>
+        From source
+      </button>
+    </div>
+
+    <div class="bg-base-100 border border-base-300 rounded-lg p-6">
+      <div data-tabs-target="panel" data-tabs-panel-name="storage">
+        <%= render "storage_tab" %>
+      </div>
+
+      <div data-tabs-target="panel" data-tabs-panel-name="source" class="hidden">
+        <%= render "source_tab" %>
+      </div>
+    </div>
+  </div>
+
+  <%= render "notebooks_list", notebooks: @notebooks %>
+</div>

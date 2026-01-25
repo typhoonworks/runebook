@@ -1,0 +1,41 @@
+<dialog id="close-session-modal" class="modal" data-controller="close-session-modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold mb-4">Close session</h3>
+
+    <p class="mb-4">
+      Are you sure you want to close "<span data-close-session-modal-target="title"></span>"?
+    </p>
+
+    <!-- Warning for unpersisted notebooks -->
+    <div data-close-session-modal-target="warning" class="alert alert-warning mb-4 hidden">
+      <%= inline_svg("icons/triangle-alert", class: "h-6 w-6 shrink-0") %>
+      <div>
+        <span class="font-semibold">The notebook is not persisted and content may be lost.</span>
+        <p class="text-sm">This notebook has not been saved to a permanent location.</p>
+      </div>
+    </div>
+
+    <!-- Info for persisted notebooks -->
+    <div data-close-session-modal-target="info" class="bg-base-200 rounded-lg py-3 pl-3 mb-4 hidden">
+      <p class="text-sm text-base-content/70 mb-1 pr-3">Your notebook is saved to:</p>
+      <div class="overflow-x-auto">
+        <p class="text-sm font-mono whitespace-nowrap pr-3" data-close-session-modal-target="filePath"></p>
+      </div>
+    </div>
+
+    <div class="modal-action">
+      <button type="button" class="btn" data-action="close-session-modal#cancel">Cancel</button>
+      <button
+        type="button"
+        class="btn btn-error"
+        data-action="close-session-modal#confirm"
+        data-close-session-modal-target="confirmBtn"
+      >
+        Close session
+      </button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

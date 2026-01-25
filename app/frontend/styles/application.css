@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typography plugin is intended for rendered Markdown/output regions */
+/* Use class="prose" on containers where appropriate. */
+
+.cell-output-region {
+    @apply relative border border-base-300 rounded-lg overflow-hidden;
+}
+
+.cell-output-region.cell-output-error {
+    @apply border-error/30;
+}
+
+.cell-output-row {
+    @apply relative py-3 px-4 border-b border-base-300 last:border-b-0;
+}
+
+.cell-output-row.cell-output-stdout {
+    @apply pr-10;
+}
+
+.cell-output-copy {
+    @apply absolute top-2 right-2 p-1.5 rounded text-base-content/40 hover:text-base-content/70 hover:bg-base-200 transition-colors cursor-pointer;
+}
+
+.cell-output-result-value {
+    @apply font-mono text-sm text-success font-medium;
+}

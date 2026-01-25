@@ -1,0 +1,16 @@
+<div class="relative top-0.5 m-0 flex justify-center group" data-el-insert-buttons>
+  <div class="w-full md:absolute z-10 group-hover:z-[11] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 flex space-x-2 justify-center items-center pointer-events-none">
+    <button class="inline-flex items-center gap-1 px-2 py-1 rounded-lg font-medium text-sm whitespace-nowrap border bg-base-200 border-base-300 text-base-content/70 hover:bg-base-300 focus:bg-base-300 pointer-events-auto" data-action="cells#addRubyAfter">
+      <%= inline_svg("icons/plus", class: "w-3 h-3") %> Ruby
+    </button>
+    <div class="relative pointer-events-auto z-20">
+      <button class="inline-flex items-center gap-1 px-2 py-1 rounded-lg font-medium text-sm whitespace-nowrap border bg-base-200 border-base-300 text-base-content/70 hover:bg-base-300 focus:bg-base-300" data-action="cells#toggleBlockMenu">
+        <%= inline_svg("icons/plus", class: "w-3 h-3") %> Block
+      </button>
+      <div class="absolute left-0 mt-1 bg-base-100 border border-base-300 rounded-lg shadow hidden pointer-events-auto" data-block-menu>
+        <button class="block w-full text-left px-3 py-2 hover:bg-base-200" data-action="cells#chooseBlockMarkdown">Markdown</button>
+        <button class="block w-full text-left px-3 py-2 hover:bg-base-200" data-action="cells#chooseBlockSection">H2 Section</button>
+      </div>
+    </div>
+  </div>
+</div>

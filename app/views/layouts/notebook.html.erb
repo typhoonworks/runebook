@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html data-theme="runebook" class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Runebook" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%= vite_client_tag %>
+    <%= vite_stylesheet_tag 'application' %>
+    <%= vite_javascript_tag 'application' %>
+  </head>
+
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <div class="flex min-h-screen">
+      <aside class="w-16 flex flex-col items-center px-3 py-2 sm:py-5 space-y-2 sm:space-y-3 bg-neutral text-neutral-content">
+        <a href="/" class="mt-1" aria-label="Home">
+          <%= inline_svg("runebook", class: "h-8 w-8 rounded-md") %>
+        </a>
+
+        <button class="text-neutral-content/70 hover:text-neutral-content rounded-xl h-10 w-10 flex items-center justify-center" title="Secrets">
+          <%= inline_svg("icons/lock", class: "h-6 w-6") %>
+        </button>
+      </aside>
+
+      <main class="flex-1 p-4 md:p-8">
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

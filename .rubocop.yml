@@ -1,0 +1,18 @@
+# Omakase Ruby styling for Rails
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+# Overwrite or add rules to create your own house style
+#
+# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
+# Layout/SpaceInsideArrayLiteralBrackets:
+#   Enabled: false
+
+AllCops:
+  Exclude:
+    - 'db/migrate/**/*'
+    - 'db/schema*.rb'
+
+# Align methods with normal indentation after access modifiers
+# e.g., `private` on its own line, but methods are not additionally indented
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent

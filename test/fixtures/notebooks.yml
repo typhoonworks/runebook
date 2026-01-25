@@ -1,0 +1,13 @@
+notebook_one:
+  title: Notebook A
+  file_path: <%= Rails.root.join('storage','notebooks','fixtures-notebook-a.runemd') %>
+  format: runemd
+  version: 1
+  dirty: false
+
+notebook_two:
+  title: Notebook B
+  file_path: <%= Rails.root.join('storage','notebooks','fixtures-notebook-b.runemd') %>
+  format: runemd
+  version: 1
+  dirty: false

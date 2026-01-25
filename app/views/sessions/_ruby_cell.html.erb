@@ -1,0 +1,55 @@
+<div class="relative" data-controller="ruby-cell" data-ruby-cell-evaluate-url-value="<%= ruby_evaluate_path %>">
+  <div class="mb-1 flex items-center justify-between">
+    <!-- Primary: Evaluate button (left) -->
+    <div class="flex items-center opacity-0 transition-opacity" data-ruby-cell-target="primaryActions">
+      <button class="text-gray-600 hover:text-gray-800 flex items-center gap-1" data-action="ruby-cell#evaluate" data-ruby-cell-target="evaluateButton">
+        <%= inline_svg("icons/play", class: "w-4 h-4") %>
+        <span class="text-sm font-medium" data-ruby-cell-target="evaluateText">Evaluate</span>
+      </button>
+    </div>
+
+    <!-- Secondary: Move, Delete (right) -->
+    <div class="flex items-center gap-2 opacity-0 pointer-events-none transition-opacity" data-ruby-cell-target="toolbar">
+      <button class="text-gray-500 hover:text-gray-700 p-1" title="Move up" data-action="ruby-cell#moveUp">
+        <%= inline_svg("icons/chevron-up", class: "w-4 h-4") %>
+      </button>
+      <button class="text-gray-500 hover:text-gray-700 p-1" title="Move down" data-action="ruby-cell#moveDown">
+        <%= inline_svg("icons/chevron-down", class: "w-4 h-4") %>
+      </button>
+      <button class="text-gray-500 hover:text-gray-700 p-1" title="Delete" data-action="ruby-cell#delete">
+        <%= inline_svg("icons/trash", class: "w-4 h-4") %>
+      </button>
+    </div>
+  </div>
+
+  <div class="relative">
+    <!-- Gutter indicator -->
+    <div data-ruby-cell-target="gutter" class="absolute top-0 bottom-0 -left-3 w-1 rounded-lg transition-colors"></div>
+
+    <div class="flex flex-col space-y-1">
+      <!-- Editor -->
+      <div class="rounded-lg overflow-hidden border border-base-300 relative" data-ruby-cell-target="editorWrapper">
+        <div data-ruby-cell-target="editor" class="min-h-[100px] bg-[#1e1e1e]">
+          <% if defined?(content) %>
+            <script type="text/plain" data-content><%= raw(content.to_s) %></script>
+          <% end %>
+        </div>
+      
+        <!-- Status badge (bottom-right inside editor) -->
+        <div class="absolute bottom-2 right-2 flex items-center gap-2">
+          <div class="flex items-center space-x-1 px-1.5 h-[22px] rounded-lg border bg-gray-800 border-gray-700 text-gray-300 text-xs hidden" data-ruby-cell-target="statusPill">
+            <span data-ruby-cell-target="statusText">Evaluated</span>
+            <span class="inline-block h-2 w-2 rounded-full" data-ruby-cell-target="statusDot"></span>
+          </div>
+          <%= inline_svg("icons/ruby", class: "w-5 h-5 text-gray-500") %>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div data-ruby-cell-target="output"></div>
+
+      <!-- Insert row -->
+      <%= render partial: "cell_insert_row" %>
+    </div>
+  </div>
+</div>

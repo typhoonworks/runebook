@@ -1,0 +1,13 @@
+{
+  "all": {
+    "entrypointsDir": "app/frontend/entrypoints",
+    "sourceCodeDir": ".",
+    "buildDir": "public/vite",
+    "publicOutputDir": "vite"
+  },
+  "development": {
+    "skipProxy": true,
+    "host": "localhost",
+    "port": 3036
+  }
+}

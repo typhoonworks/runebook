@@ -1,0 +1,25 @@
+<div class="flex items-center group">
+  <h2 class="grow text-2xl font-semibold px-1 -ml-1.5 rounded-lg border border-transparent whitespace-pre-wrap cursor-text transition-colors focus:outline-none hover:border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+      tabindex="0"
+      data-controller="inline-heading"
+      data-action="keydown->inline-heading#keydown focus->inline-heading#focus"
+      spellcheck="false"><%= defined?(title) && title.present? ? title : 'Section' %></h2>
+
+  <div class="ml-4 flex space-x-2 items-center opacity-0 group-hover:opacity-100 transition-opacity" role="toolbar" aria-label="section actions">
+    <a href="#section" class="text-xl p-1 rounded-full leading-none text-base-content/60 hover:text-base-content" aria-label="link to section">
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M10.59 13.41a1 1 0 010-1.41l2-2a1 1 0 011.41 1.41l-2 2a1 1 0 01-1.41 0z"/><path d="M13.41 10.59a1 1 0 010 1.41l-2 2a1 1 0 01-1.41-1.41l2-2a1 1 0 011.41 0z"/></svg>
+    </a>
+    <button class="text-xl p-1 rounded-full leading-none text-base-content/60 hover:text-base-content" title="Move up" aria-label="move section up" data-action="cells#moveSectionUp">
+      <%= inline_svg("icons/chevron-up", class: "h-5 w-5") %>
+    </button>
+    <button class="text-xl p-1 rounded-full leading-none text-base-content/60 hover:text-base-content" title="Move down" aria-label="move section down" data-action="cells#moveSectionDown">
+      <%= inline_svg("icons/chevron-down", class: "h-5 w-5") %>
+    </button>
+    <button class="text-xl p-1 rounded-full leading-none text-base-content/60 hover:text-base-content" title="Delete" aria-label="delete section" data-action="cells#deleteSection">
+      <%= inline_svg("icons/trash", class: "h-5 w-5") %>
+    </button>
+  </div>
+</div>
+<div class="mt-1">
+  <%= render partial: "cell_insert_row" %>
+</div>

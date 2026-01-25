@@ -1,0 +1,70 @@
+<dialog id="export-modal" class="modal" data-controller="export-modal" data-export-modal-title-value="<%= document.title %>">
+  <div class="modal-box max-w-3xl">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-lg font-bold">Export</h3>
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-base-content/60">(esc)</span>
+        <button type="button" class="btn btn-ghost btn-sm btn-square" data-action="export-modal#close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="text-base-content/70 mb-4">Here you can preview and directly export the notebook source.</p>
+
+    <!-- Tabs -->
+    <div class="tabs tabs-bordered mb-4">
+      <button type="button"
+              class="tab tab-active"
+              data-export-modal-target="runemdTab"
+              data-action="click->export-modal#showRunemd">
+        Runebook Markdown
+      </button>
+      <button type="button"
+              class="tab"
+              data-export-modal-target="irbTab"
+              data-action="click->export-modal#showIrb">
+        IRB session
+      </button>
+    </div>
+
+    <!-- Runebook Markdown content -->
+    <div data-export-modal-target="runemdContent">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium" data-export-modal-target="runemdFilename"><%= document.title.parameterize %>.runemd</span>
+        <button type="button"
+                class="btn btn-ghost btn-sm btn-square"
+                data-action="click->export-modal#copyRunemd"
+                data-export-modal-target="copyRunemdBtn"
+                title="Copy to clipboard">
+          <%= inline_svg("icons/clipboard", class: "w-5 h-5") %>
+        </button>
+      </div>
+      <div class="bg-neutral text-neutral-content rounded-lg p-4 overflow-auto max-h-96">
+        <pre class="text-sm font-mono whitespace-pre-wrap" data-export-modal-target="runemdPreview"></pre>
+      </div>
+    </div>
+
+    <!-- IRB session content -->
+    <div data-export-modal-target="irbContent" class="hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium" data-export-modal-target="irbFilename"><%= document.title.parameterize %>.rb</span>
+        <button type="button"
+                class="btn btn-ghost btn-sm btn-square"
+                data-action="click->export-modal#copyIrb"
+                data-export-modal-target="copyIrbBtn"
+                title="Copy to clipboard">
+          <%= inline_svg("icons/clipboard", class: "w-5 h-5") %>
+        </button>
+      </div>
+      <div class="bg-neutral text-neutral-content rounded-lg p-4 overflow-auto max-h-96">
+        <pre class="text-sm font-mono whitespace-pre-wrap" data-export-modal-target="irbPreview"></pre>
+      </div>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
