@@ -1,0 +1,113 @@
+<% content_for :title, @notebook.title %>
+
+<div class="max-w-4xl mx-auto"
+     data-controller="notebook"
+     data-notebook-notebook-id-value="<%= @notebook.id %>"
+     data-notebook-session-token-value="<%= @session.token %>"
+     data-notebook-autosave-interval-value="<%= @notebook.effective_autosave_interval %>"
+     data-notebook-dirty-value="<%= @notebook.dirty? %>"
+     data-notebook-persisted-to-user-path-value="<%= @notebook.persisted_to_user_path? %>"
+     data-notebook-file-path-value="<%= @notebook.file_path %>">
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h1 id="notebook-heading" class="px-1 -ml-1.5 text-3xl font-semibold border border-transparent rounded-lg whitespace-pre-wrap transition-colors focus:outline-none hover:border-primary/30 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+          data-controller="document-title"
+          data-action="blur->document-title#blur keydown->document-title#keydown focus->document-title#focus"
+          data-document-title-update-url-value="<%= notebook_path(@notebook) %>"
+          data-document-title-token-value="<%= form_authenticity_token %>"><%= @notebook.title %></h1>
+      <div class="flex items-center gap-3">
+        <span data-notebook-target="saveStatus" class="text-sm"></span>
+        <span data-notebook-target="dirtyIndicator"
+              class="w-2.5 h-2.5 rounded-full <%= @notebook.dirty? ? 'bg-warning' : 'bg-success' %>"
+              title="<%= @notebook.dirty? ? 'Unsaved changes' : 'All changes saved' %>"></span>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square">
+            <%= inline_svg("icons/ellipsis-vertical", class: "w-5 h-5") %>
+          </div>
+          <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow border border-base-300">
+            <li>
+              <button type="button"
+                      data-notebook-target="saveButton"
+                      data-action="click->notebook#save"
+                      class="flex items-center gap-2">
+                <%= inline_svg("icons/save", class: "w-4 h-4") %>
+                Save
+              </button>
+            </li>
+            <li>
+              <button type="button"
+                      data-action="click->notebook#openExportModal"
+                      class="flex items-center gap-2">
+                <%= inline_svg("icons/upload", class: "w-4 h-4") %>
+                Export
+              </button>
+            </li>
+            <li class="border-t border-base-300 mt-1 pt-1">
+              <button type="button"
+                      data-action="click->notebook#close"
+                      class="flex items-center gap-2 text-error">
+                <%= inline_svg("icons/circle-power", class: "w-4 h-4") %>
+                Close
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-2 md:p-0" data-controller="cells" data-session-token="<%= @session.token %>">
+    <%# Setup cell (if present) %>
+    <%# Always render a setup cell; if parsed content is present, use it; otherwise empty %>
+    <% setup_content = (defined?(@notebook_data) && @notebook_data && @notebook_data.setup_cell) ? @notebook_data.setup_cell.content.to_s : "" %>
+    <%= render partial: "setup_cell", locals: { content: setup_content } %>
+
+    <%# Sections and cells %>
+    <div data-cells-target="list" class="flex flex-col space-y-1">
+      <% if defined?(@notebook_data) && @notebook_data&.sections&.any? %>
+        <% @notebook_data.sections.each do |section| %>
+          <div class="mb-4">
+            <%= render partial: "section_header", locals: { title: section.title } %>
+          </div>
+          <% section.cells.each do |cell| %>
+            <% if cell.type.to_sym == :ruby %>
+              <%= render partial: "ruby_cell", locals: { content: cell.content } %>
+            <% elsif cell.type.to_sym == :markdown %>
+              <%= render partial: "markdown_cell", locals: { content: cell.content } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="mb-4">
+          <%= render partial: "section_header" %>
+        </div>
+        <%= render partial: "ruby_cell" %>
+      <% end %>
+    </div>
+
+    <template id="markdown-cell-template" data-cells-target="template">
+      <%= render partial: "markdown_cell" %>
+    </template>
+    <template id="ruby-cell-template">
+      <%= render partial: "ruby_cell" %>
+    </template>
+    <template id="section-template">
+      <div class="mb-4">
+        <%= render partial: "section_header" %>
+      </div>
+    </template>
+    <div class="relative top-0.5 m-0 flex justify-center" data-cells-target="emptyState">
+      <button type="button"
+              class="inline-flex items-center gap-1 px-2 py-1 rounded-lg font-medium text-sm whitespace-nowrap border bg-base-200 border-base-300 text-base-content/70 hover:bg-base-300 focus:bg-base-300"
+              data-action="click->cells#addSectionAfter">
+        <%= inline_svg("icons/plus", class: "w-3 h-3") %>
+        Section
+      </button>
+    </div>
+  </div>
+</div>
+
+<%= render partial: "save_modal" %>
+<%= render partial: "export_modal", locals: { document: @notebook } %>
+<%= render "shared/close_session_modal" %>
+<%= render partial: "delete_cell_modal" %>

@@ -1,0 +1,3 @@
+/* CSS entrypoint for styles. Faster first paint and SSR-friendly. */
+@import '../styles/application.css';
+

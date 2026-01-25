@@ -1,0 +1,53 @@
+<div class="mb-8">
+  <div class="relative group"
+       data-controller="ruby-cell"
+       data-ruby-cell-evaluate-url-value="<%= ruby_evaluate_path %>"
+       data-cell-type="setup">
+
+    <!-- Gutter indicator -->
+    <div data-ruby-cell-target="gutter" class="absolute top-0 bottom-0 -left-3 w-1 rounded-lg transition-colors"></div>
+
+    <!-- Hidden toolbar (setup cell doesn't need it but controller expects it) -->
+    <div data-ruby-cell-target="toolbar" class="hidden"></div>
+
+    <!-- Hidden action/primary buttons (we use custom button below) -->
+    <div data-ruby-cell-target="actionButton" class="hidden"></div>
+    <div data-ruby-cell-target="primaryButton" class="hidden"></div>
+
+    <div class="border border-base-300 rounded-lg overflow-hidden">
+      <!-- Info banner -->
+      <div class="py-2 px-3 flex items-center justify-between border-b border-base-200 bg-base-100 text-sm text-base-content/60">
+        <span class="font-medium">Notebook dependencies and setup</span>
+        <div class="flex items-center gap-2">
+          <button class="btn btn-xs btn-ghost" data-action="click->ruby-cell#evaluate">
+            <%= inline_svg("icons/reconnect", class: "w-3 h-3") %>
+            <span class="ml-1">Reconnect and setup</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div class="relative">
+        <div data-ruby-cell-target="editorWrapper" class="h-32 bg-[#1e1e1e]">
+          <div data-ruby-cell-target="editor" class="h-full">
+            <% if defined?(content) %>
+              <script type="text/plain" data-content><%= raw(content.to_s) %></script>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Status badge (bottom-right inside editor) -->
+        <div class="absolute bottom-2 right-2 flex items-center gap-2">
+          <div class="flex items-center space-x-1 px-1.5 h-[22px] rounded-lg border bg-gray-800 border-gray-700 text-gray-300 text-xs hidden" data-ruby-cell-target="statusPill">
+            <span data-ruby-cell-target="statusText">Evaluated</span>
+            <span class="inline-block h-2 w-2 rounded-full" data-ruby-cell-target="statusDot"></span>
+          </div>
+          <%= inline_svg("icons/ruby", class: "w-5 h-5 text-gray-500") %>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div data-ruby-cell-target="output" class="border-t border-base-200 min-h-[2rem]"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<div class="max-w-5xl mx-auto">
+  <div class="flex items-start justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-semibold">Home</h1>
+      <p class="mt-1 text-sm text-base-content/60">Local‑first Ruby notebooks.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= link_to "Open", notebooks_path, class: "btn btn-outline" %>
+      <%= link_to "New notebook", sessions_path, data: { turbo_method: :post }, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div class="alert bg-primary/5 border border-primary/20 text-sm mb-8">
+<%= inline_svg("icons/info", class: "w-5 h-5 text-primary") %>
+    <div>
+      <h2 class="font-medium">Welcome to Runebook</h2>
+      <div class="text-base-content/70">You can open an existing <code>.runemd</code> or start a new one.</div>
+    </div>
+  </div>
+
+  <section class="mb-10">
+    <h2 class="text-sm font-medium text-base-content/70 tracking-wide mb-3">Recent Notebooks</h2>
+    <% if @notebooks.any? %>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @notebooks.each do |doc| %>
+          <article class="card bg-base-100 border border-base-300">
+            <div class="card-body p-4">
+              <h3 class="card-title text-base"><%= doc.title %></h3>
+              <p class="text-xs text-base-content/60 truncate"><%= doc.file_path %></p>
+              <div class="card-actions justify-end">
+                <%= link_to "Open", sessions_path(notebook_id: doc.id), data: { turbo_method: :post }, class: "btn btn-ghost btn-sm" %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="rounded-lg border border-dashed border-base-300 bg-base-100 p-6 text-sm text-base-content/60">No notebooks yet.</div>
+    <% end %>
+  </section>
+
+  <section data-controller="session-actions">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-medium text-base-content/70 tracking-wide">Running sessions</h2>
+    </div>
+    <% if @sessions.any? %>
+      <ul class="divide-y divide-base-300 bg-base-100 border border-base-300 rounded-lg">
+        <% @sessions.each do |s| %>
+          <li class="p-4 flex items-center justify-between">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <%= link_to session_path(s.token), class: "font-medium hover:text-primary truncate" do %>
+                  <%= s.notebook.title %>
+                <% end %>
+              </div>
+              <div class="text-xs text-base-content/80 mt-1">
+                <% if s.notebook.persisted_to_user_path? %>
+                  <span class="truncate block" title="<%= s.notebook.file_path %>"><%= truncate_path(s.notebook.file_path) %></span>
+                <% else %>
+                  <span class="text-warning">No file</span>
+                <% end %>
+              </div>
+              <div class="text-xs text-base-content/70 mt-0.5">
+                Started <%= time_ago_in_words(s.started_at) %> ago
+              </div>
+            </div>
+            <div class="dropdown dropdown-end">
+              <button type="button" class="btn btn-ghost btn-sm btn-square" aria-label="Session actions for <%= s.notebook.title %>">
+                <%= inline_svg("icons/ellipsis-vertical", class: "w-5 h-5") %>
+              </button>
+              <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 shadow border border-base-300">
+                <li>
+                  <%= link_to session_path(s.token), class: "flex items-center gap-2" do %>
+                    <%= inline_svg("icons/notebook", class: "w-4 h-4") %>
+                    Open
+                  <% end %>
+                </li>
+                <li class="border-t border-base-300 mt-1 pt-1">
+                  <button
+                    type="button"
+                    class="flex items-center gap-2 text-error"
+                    data-action="session-actions#openCloseModal"
+                    data-session-token="<%= s.token %>"
+                    data-session-title="<%= s.notebook.title %>"
+                    data-session-persisted="<%= s.notebook.persisted_to_user_path? %>"
+                    data-session-file-path="<%= s.notebook.file_path %>"
+                  >
+                    <%= inline_svg("icons/circle-power", class: "w-4 h-4") %>
+                    Close
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="rounded-lg border border-dashed border-base-300 bg-base-100 p-6 text-sm text-base-content/60">No running sessions.</div>
+    <% end %>
+
+    <%= render "shared/close_session_modal" %>
+  </section>
+</div>

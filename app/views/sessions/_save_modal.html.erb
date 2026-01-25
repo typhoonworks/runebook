@@ -1,0 +1,124 @@
+<%# Save to File Modal %>
+<dialog id="save-modal" class="modal"
+        data-controller="save-modal"
+        data-save-modal-session-token-value="<%= @session.token %>"
+        data-save-modal-default-filename-value="<%= @notebook.title.parameterize %>.runemd"
+        data-save-modal-browse-url-value="<%= session_files_path(@session.token) %>"
+        data-save-modal-create-directory-url-value="<%= session_directories_path(@session.token) %>">
+  <div class="modal-box w-11/12 max-w-2xl">
+    <h3 class="font-bold text-lg mb-4">Save to file</h3>
+
+    <%# Path input row with + dropdown %>
+    <div class="flex items-center gap-2 mb-4">
+      <div class="flex-1">
+        <input
+          type="text"
+          class="input input-bordered w-full font-mono text-sm"
+          placeholder="/path/to/directory"
+          data-save-modal-target="pathInput"
+          data-action="keydown.enter->save-modal#navigateFromInput change->save-modal#navigateFromInput"
+        />
+      </div>
+
+      <%# Plus dropdown menu %>
+      <div class="dropdown dropdown-end">
+        <button type="button" tabindex="0" class="btn btn-ghost btn-square" aria-label="Create new">
+          <%= inline_svg("icons/plus", class: "w-5 h-5") %>
+        </button>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow border border-base-300">
+          <li>
+            <button type="button" data-action="save-modal#showNewDirectoryModal" class="flex items-center gap-2">
+              <%= inline_svg("icons/folder", class: "w-4 h-4") %>
+              New directory
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <%# Directory listing (3-column grid) %>
+    <div class="border border-base-300 rounded-lg mb-4 relative">
+      <div
+        class="absolute inset-0 bg-base-100/80 flex items-center justify-center hidden z-10 rounded-lg"
+        data-save-modal-target="loadingOverlay"
+      >
+        <span class="loading loading-spinner loading-md"></span>
+      </div>
+      <div class="max-h-60 overflow-y-auto p-4" data-save-modal-target="directoryBrowser">
+        <div class="flex items-center justify-center py-8 text-base-content/60">
+          Loading...
+        </div>
+      </div>
+    </div>
+
+    <%# File name input %>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">File name</span>
+      </label>
+      <input type="text"
+             placeholder="notebook.runemd"
+             class="input input-bordered"
+             data-save-modal-target="filenameInput"
+             data-action="input->save-modal#validateFilename">
+      <label class="label" data-save-modal-target="filenameError">
+        <span class="label-text-alt text-error hidden"></span>
+      </label>
+    </div>
+
+    <%# Autosave interval %>
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Autosave</span>
+      </label>
+      <select class="select select-bordered" data-save-modal-target="autosaveSelect">
+        <option value="5000">Every 5 seconds</option>
+        <option value="30000" selected>Every 30 seconds</option>
+        <option value="60000">Every 1 minute</option>
+        <option value="600000">Every 10 minutes</option>
+        <option value="0">Never</option>
+      </select>
+    </div>
+
+    <%# Modal actions %>
+    <div class="modal-action">
+      <button type="button"
+              class="btn btn-ghost"
+              data-action="click->save-modal#close">
+        Cancel
+      </button>
+      <button type="button"
+              class="btn btn-primary"
+              data-action="click->save-modal#save"
+              data-save-modal-target="saveButton">
+        Save
+      </button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+
+  <%# New directory modal %>
+  <dialog class="modal" data-save-modal-target="newDirectoryModal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg mb-4">New directory</h3>
+      <div class="form-control">
+        <input
+          type="text"
+          class="input input-bordered w-full"
+          placeholder="Directory name"
+          data-save-modal-target="newDirectoryInput"
+          data-action="keydown.enter->save-modal#createDirectory keydown.esc->save-modal#closeNewDirectoryModal"
+        />
+      </div>
+      <div class="modal-action">
+        <button type="button" class="btn btn-ghost" data-action="save-modal#closeNewDirectoryModal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-action="save-modal#createDirectory">Create</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+</dialog>
